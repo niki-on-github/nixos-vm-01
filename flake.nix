@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-23.11";
+      url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
     nixpkgs-unstable = {
@@ -22,7 +22,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/master";
     };
 
     nur = {
@@ -36,6 +36,7 @@
 
     personalModules = {
       url = "git+https://github.com/niki-on-github/nixos-modules.git";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     personalHyprland = {
