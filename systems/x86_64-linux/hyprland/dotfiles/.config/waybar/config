@@ -1,0 +1,46 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 38,
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-right": ["pulseaudio", "custom/split", "cpu", "custom/split", "memory", "custom/split", "network", "custom/split", "clock", "tray"],
+    "hyprland/workspaces": {
+        "on-click": "activate"
+    },
+    "custom/split": {
+        "exec": "echo -n ' - '",
+        "interval": 3600
+    },
+    "hyprland/window": {
+        "format": " {}",
+        "max-length": 128
+    },
+    "tray": {
+        "icon-size": 19,
+        "spacing": 12
+    },
+    "clock": {
+        "interval": 1,
+        "format": "{:%a, %d. %b  -  %X}"
+    },
+    "cpu": {
+        "format": "CPU {usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": "RAM {}%"
+    },
+    "network": {
+       "interval": 3,
+       "format-disconnected": "NET OFF",
+       "format-ethernet": "NET {bandwidthUpBytes:>} {bandwidthDownBytes:>}",
+    },
+    "pulseaudio": {
+        "format": "VOL {volume}%",
+        "format-muted": "VOL MUT",
+        "on-click": "bash -c '$HOME/.local/bin/system/volume-control -t'",
+        "ignored-sinks": [
+            "Easy Effects Sink"
+        ]
+    }
+}

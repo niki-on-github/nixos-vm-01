@@ -1,0 +1,52 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: Roboto Mono; /* ttf-roboto-mono */
+    font-size: 22px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 1);
+    border-bottom: 4px solid #1d99f3;
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .3s;
+}
+
+#workspaces button {
+    padding: 0 15px;
+    background-color: transparent;
+    color: #ffffff;
+    border-bottom: 3px solid transparent;
+}
+
+#workspaces button:hover {
+    border-bottom: 3px solid #ffffff;
+}
+
+#workspaces button.active {
+    background-color: #1d99f3;
+}
+
+#workspaces button.urgent {
+    background-color: #ff0000;
+}
+
+#mode {
+    padding: 0 15px;
+    margin: 0 0px;
+}
+
+#clock,
+#network,
+#cpu,
+#memory,
+#pulseaudio,
+#pulseaudio.muted,
+#tray {
+    padding: 0 12px;
+    margin: 0 0px;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0);
+}

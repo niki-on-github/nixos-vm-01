@@ -32,9 +32,7 @@ in
       "-display sdl,gl=on"
       "-audio pa,model=hda"
     ];
-
   };
-
 
   home-manager = {
     extraSpecialArgs = {
@@ -48,7 +46,6 @@ in
       ${user} = import ./home.nix;
     };
   };
-
    
   users = {
     users = {
@@ -71,7 +68,6 @@ in
     };
   };
 
-
   programs.hyprland = {
     enable = true;
   };
@@ -85,7 +81,6 @@ in
       WLR_RENDERER_ALLOW_SOFTWARE = "1";
       WLR_NO_HARDWARE_CURSORS = "1";
     };
-
     loginShellInit = ''
       if [ -f $HOME/.profile ]; then
         source $HOME/.profile
