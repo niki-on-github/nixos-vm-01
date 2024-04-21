@@ -56,7 +56,7 @@ in
     "${config.xdg.configHome}/mako/config".enable = lib.mkForce false;
     "${config.xdg.configHome}/hypr/hyprland.conf".enable = lib.mkForce false;
     "${config.programs.zsh.dotDir}/.zshrc".enable = lib.mkForce false;
-    "${config.xdg.configHome}/hypr/monitor.conf".text = ''
+    "${config.xdg.configHome}/hypr/monitors.conf".text = ''
       monitor=,preferred,auto,auto
      '';
     "${config.xdg.configHome}/hypr/keys.conf".text = ''
