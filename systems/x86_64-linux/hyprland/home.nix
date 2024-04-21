@@ -62,6 +62,9 @@ in
     "${config.xdg.configHome}/hypr/keys.conf".text = ''
       $mainMod = ALT
     '';
+    "${config.xdg.configHome}/hypr/devices.conf".text = ''
+      # use `hyprctl devices` to identify your devices
+    '';
   };
 
   home.packages = with pkgs; [
