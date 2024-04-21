@@ -37,52 +37,39 @@ in
 {
   imports = [
     inputs.nur.hmModules.nur
+    inputs.self.homeManagerRoles.desktop
     inputs.self.homeManagerModules.general
     inputs.self.homeManagerModules.templates
   ];
 
-  home.file = builtins.listToAttrs dotfiles;
+
+  home.activation = {
+    dotfiles-setup = lib.hm.dag.entryAfter [ "installPackages" ] ''
+      export PATH="${pkgs.git}/bin:${pkgs.openssh}/bin:$PATH"      
+      [ -d ~/.dotfiles ] || git clone --bare https://github.com/niki-on-github/nixos-dotfiles.git ~/.dotfiles
+      [ -f ~/.profiles ] || git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout -f main
+      git --git-dir=$HOME/.dotfiles --work-tree=$HOME config --local status.showUntrackedFiles no  
+    '';
+  };
+
+  home.file = {
+    "${config.xdg.configHome}/mako/config".enable = lib.mkForce false;
+    "${config.xdg.configHome}/hypr/hyprland.conf".enable = lib.mkForce false;
+    "${config.programs.zsh.dotDir}/.zshrc".enable = lib.mkForce false;
+    "${config.xdg.configHome}/hypr/monitor.conf".text = ''
+      monitor=,preferred,auto,auto
+     '';
+    "${config.xdg.configHome}/hypr/keys.conf".text = ''
+      $mainMod = ALT
+    '';
+  };
 
   home.packages = with pkgs; [
-    clipman
-    grim
-    mako
-    slurp
-    tofi
-    wayvnc
-    wev
-    glib
-    wf-recorder
-    wl-clipboard
-    wlr-randr
-    waybar
-    wtype
-    swaylock-effects
-    swayidle
-  ] ++ [
-    pamixer
-    pavucontrol
-    pulsemixer
-    easyeffects
-    playerctl
-    lame
-  ] ++ [
-    imagemagick
-  ] ++ [
-    udiskie
-    alacritty
-    foot
-    tk
-    meld
-    imv
-    gparted
-    zathura
+    hyprpaper
   ];
 
-  programs = {
-    zsh = {
-      enable = true;
-      dotDir = ".config/zsh";
-    };
+  wayland.windowManager.hyprland = {
+    enable = true;
+    systemdIntegration = true;
   };
 }
