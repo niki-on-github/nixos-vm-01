@@ -9,14 +9,14 @@ resource "libvirt_volume" "terraform-gpu-qcow2" {
   name = "terraform-gpu.qcow2"
   pool = "default"
   format = "qcow2"
-  size = 40000000000
+  size = 50000000000
   base_volume_id = libvirt_volume.terraform-gpu-base-qcow2.id
 }
 
 resource "libvirt_domain" "terraform-gpu" {
   name   = "terraform-gpu"
-  memory = "4096"
-  vcpu   = 6
+  memory = "16384"
+  vcpu   = 8
   autostart = false
   qemu_agent = false
 

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, inputs, nixpkgs-unstable, nur, hyprland, ... }:
+{ config, lib, pkgs, modulesPath, inputs, nixpkgs-unstable, nur, ... }:
 let
   user = "nix";
 in
@@ -11,9 +11,7 @@ in
   ];
   templates = {
     hardware = {
-        nvidia = {
-            enable = true;
-        };
+        nvidia.enable = true;
     };
     apps = {
         modernUnix.enable = true;
@@ -21,18 +19,20 @@ in
     };
     services = {
         nvidiaDocker.enable = true;
+        ssh.enable = true;
     };
   };
 
   virtualisation.vmVariant = {
     virtualisation = {
       memorySize = 8192;
-      cores = 4;
+      cores = 6;
       writableStoreUseTmpfs = false;
     };
   };
 
   # pci device: -device vfio-pci,host=<bus>:<slot>.<func>,multifunction=on
+  /*
   virtualisation.qemu.options = [
     "-vga none"
     "-nographic"
@@ -43,6 +43,7 @@ in
     "-device vfio-pci,host=0e:00.2,bus=pcie.1,addr=00.2"
     "-device vfio-pci,host=0e:00.3,bus=pcie.1,addr=00.3"
   ];
+  */
 
   boot.kernelParams = ["console=ttyS0"];
   boot.loader.grub.device = lib.mkDefault "/dev/vda";
@@ -53,16 +54,17 @@ in
     fsType = "ext4";
   };
 
+  # required to be able to set the final disk size in terraform
+  system.activationScripts.autoResizeNixosRoot = {
+    text = ''
+      ${pkgs.cloud-utils}/bin/growpart /dev/vda 1
+      ${pkgs.e2fsprogs}/bin/resize2fs /dev/vda1
+    '';
+  };
+
   #NOTE this use https://github.com/NixOS/nixpkgs/blob/master/nixos/lib/make-disk-image.nix
   system.build.qcow2 = import "${modulesPath}/../lib/make-disk-image.nix" {
     inherit lib config pkgs;
-  };
-
-  services.xserver = {
-    xkb.layout = "de";
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
   };
 
   home-manager = {
@@ -109,7 +111,6 @@ in
   };
 
   services.getty.autologinUser = "${user}";
-  services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
   
 }
