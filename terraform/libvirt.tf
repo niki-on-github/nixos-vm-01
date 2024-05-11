@@ -1,8 +1,8 @@
 resource "libvirt_volume" "terraform-gpu-base-qcow2" {
-  name = "gpu.qcow2"
+  name = "gpu.img"
   pool = "default"
-  source = "./gpu.qcow2"
-  format = "qcow2"
+  source = "./result/nixos.img"
+  format = "raw"
 }
 
 resource "libvirt_volume" "terraform-gpu-qcow2" {
@@ -18,8 +18,7 @@ resource "libvirt_domain" "terraform-gpu" {
   memory = "4096"
   vcpu   = 6
   autostart = false
-  qemu_agent = true
-  firmware = "efi"
+  qemu_agent = false
 
   cpu {
     mode = "host-passthrough"

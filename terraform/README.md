@@ -1,52 +1,21 @@
 # Terraform
 
-Deploy the OPNsense VM.
+Deploy the NixOS GPU VM. I was not able to get the nixos build in vm function to use with gpu passthrough. The gpu was shown inside the vm but the nvidia driver is not behaving correctly. Workaround for now is to use this terraform manifest.
 
 ## Setup
 
-In my repositroy hosted on my personal git server i use a git subvolume of my OPNsense backup config for the path `/terraform/config`. In addition i store the `password` in `secrets.sops.yaml` in this repository.
-
-
-## Usage
-
-### Cheat-Sheet
-
-```bash
+```sh
+nix build '.#nixosConfigurations.gpu.config.system.build.qcow2'
 terraform init
 terraform plan
 terraform apply
 sudo virsh net-dhcp-leases default
-terraform destroy
 ```
-
-## Requirements
-
-```bash
-sudo mkdir -p /var/lib/libvirt/images
-virsh --connect qemu:///system pool-define /dev/stdin <<EOF
-<pool type='dir'>
-  <name>default</name>
-  <target>
-    <path>/var/lib/libvirt/images</path>
-  </target>
-</pool>
-EOF
-virsh --connect qemu:///system pool-start default
-virsh --connect qemu:///system pool-autostart default
-```
-
-## Connect
-
-```bash
-virt-viewer --connect qemu+ssh://nix@server02.lan:22/system terraform-opnsense
-```
-
 
 ## Delete
 
 If `terraform destroy` not works use:
 
-
 ```bash
-virsh --connect qemu:///system undefine terraform-opnsense
+virsh --connect qemu:///system undefine terraform-gpu
 ````
