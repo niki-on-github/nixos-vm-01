@@ -26,6 +26,7 @@ in
       cores = 4;
     };
   
+    # pci device: -device vfio-pci,host=<bus>:<slot>.<func>,multifunction=on
     virtualisation.qemu.options = [
       "-vga none"
       "-device virtio-vga-gl,xres=1664,yres=936"
