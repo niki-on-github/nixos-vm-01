@@ -35,8 +35,8 @@
     };
 
     personalModules = {
-        # url = "git+https://github.com/niki-on-github/nixos-modules.git";
-        url = "git+https://git.k8s.lan/r/nixos-modules.git";
+      url = "git+https://github.com/niki-on-github/nixos-modules.git";
+      # url = "git+https://git.k8s.lan/r/nixos-modules.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
