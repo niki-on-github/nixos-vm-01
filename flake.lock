@@ -326,17 +326,17 @@
         "nur": "nur_2"
       },
       "locked": {
-        "lastModified": 1715424311,
-        "narHash": "sha256-WrggUsYT2izRP5cXtIjSCy77koMRa3IsDTBvAPMfyJY=",
+        "lastModified": 1715430286,
+        "narHash": "sha256-DCHqv27wrxg0bqUPencXkbQN8DxPPZnWlUNaD/IQTjw=",
         "ref": "refs/heads/main",
-        "rev": "be249dad304423e3be9fb5677c5272f96ffa2ac3",
-        "revCount": 748,
+        "rev": "ca6dfd2af6faa013ca4edb0f9e5ea5b9ad0305d3",
+        "revCount": 23,
         "type": "git",
-        "url": "https://git.k8s.lan/r/nixos-modules.git"
+        "url": "https://github.com/niki-on-github/nixos-modules.git"
       },
       "original": {
         "type": "git",
-        "url": "https://git.k8s.lan/r/nixos-modules.git"
+        "url": "https://github.com/niki-on-github/nixos-modules.git"
       }
     },
     "root": {

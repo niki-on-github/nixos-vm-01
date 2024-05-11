@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, nixpkgs-unstable, nur, hyprland, ... }:
+{ config, lib, pkgs, modulesPath, inputs, nixpkgs-unstable, nur, hyprland, ... }:
 let
   user = "nix";
 in
@@ -7,15 +7,9 @@ in
     inputs.personalModules.nixosModules.general
     inputs.personalModules.nixosModules.templates
     inputs.home-manager.nixosModules.home-manager
+    "${toString modulesPath}/profiles/qemu-guest.nix"
   ];
   templates = {
-    system = {
-      setup = {
-        enable = true;
-        encrypt = false;
-        disk = "/dev/vda";
-      };
-    };
     hardware = {
         nvidia = {
             enable = true;
@@ -35,22 +29,24 @@ in
       memorySize = 8192;
       cores = 4;
     };
-
-    # pci device: -device vfio-pci,host=<bus>:<slot>.<func>,multifunction=on
-    virtualisation.qemu.options = [
-      # "-vga none"
-      # "-nographic"
-      "-blockdev '{\"driver\":\"file\",\"filename\":\"/run/libvirt/nix-ovmf/OVMF_CODE.fd\",\"node-name\":\"libvirt-pflash0-storage\",\"auto-read-only\":true,\"discard\":\"unmap\"}'"
-      "-blockdev '{\"node-name\":\"libvirt-pflash0-format\",\"read-only\":true,\"driver\":\"raw\",\"file\":\"libvirt-pflash0-storage\"}'"
-      "-M q35,pflash0=libvirt-pflash0-format"
-      "-device pcie-root-port,id=pcie.1,bus=pcie.0,addr=1c.0,slot=1,chassis=1,multifunction=on"
-      "-device vfio-pci,host=0e:00.0,bus=pcie.1,addr=00.0,x-vga=on,multifunction=on"
-      "-device vfio-pci,host=0e:00.1,bus=pcie.1,addr=00.1"
-      "-device vfio-pci,host=0e:00.2,bus=pcie.1,addr=00.2"
-      "-device vfio-pci,host=0e:00.3,bus=pcie.1,addr=00.3"
-    ];
   };
 
+  boot.kernelParams = ["console=ttyS0"];
+  boot.loader.grub.device = lib.mkDefault "/dev/vda";
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    autoResize = true;
+    fsType = "ext4";
+  };
+
+  #NOTE this use https://github.com/NixOS/nixpkgs/blob/master/nixos/lib/make-disk-image.nix
+  system.build.qcow2 = import "${modulesPath}/../lib/make-disk-image.nix" {
+    inherit lib config pkgs;
+    diskSize = 20000;
+    format = "qcow2";
+    partitionTableType = "hybrid";
+  };
 
   services.xserver = {
     xkb.layout = "de";
