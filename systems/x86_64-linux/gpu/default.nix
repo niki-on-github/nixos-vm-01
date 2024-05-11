@@ -56,7 +56,6 @@ in
   #NOTE this use https://github.com/NixOS/nixpkgs/blob/master/nixos/lib/make-disk-image.nix
   system.build.qcow2 = import "${modulesPath}/../lib/make-disk-image.nix" {
     inherit lib config pkgs;
-    # diskSize = 20000;
   };
 
   services.xserver = {
