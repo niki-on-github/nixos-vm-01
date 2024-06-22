@@ -23,6 +23,10 @@ in
     };
   };
 
+  security.pki.certificateFiles = [
+    ./secrets/pki/ca-cert.crt
+  ];
+
   virtualisation.vmVariant = {
     virtualisation = {
       memorySize = 8192;
